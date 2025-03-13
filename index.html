@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modern Team Section</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #f8f9fa;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    .team-heading {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .team-heading h2 {
+      font-size: 2.5rem;
+      color: #2d3748;
+      margin-bottom: 12px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .team-heading h2::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 4px;
+      background: linear-gradient(to right, #5f67ea, #9f85ff);
+      border-radius: 2px;
+    }
+
+    .team-heading p {
+      max-width: 600px;
+      margin: 0 auto;
+      color: #718096;
+      font-size: 1.1rem;
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 40px;
+      margin-top: 30px;
+    }
+
+    .team-card {
+      background-color: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+    }
+
+    .team-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .card-image {
+      height: 280px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .team-card:hover .card-image img {
+      transform: scale(1.1);
+    }
+
+    .card-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 60%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .team-card:hover .card-overlay {
+      opacity: 1;
+    }
+
+    .social-icons {
+      position: absolute;
+      bottom: 20px;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      transform: translateY(20px);
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+
+    .team-card:hover .social-icons {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .social-icons a {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #5f67ea;
+      font-size: 18px;
+      transition: all 0.2s ease;
+    }
+
+    .social-icons a:hover {
+      background: #5f67ea;
+      color: white;
+      transform: scale(1.1);
+    }
+
+    .card-content {
+      padding: 25px;
+      text-align: center;
+    }
+
+    .member-name {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #2d3748;
+      margin-bottom: 6px;
+    }
+
+    .member-role {
+      color: #5f67ea;
+      font-weight: 500;
+      margin-bottom: 12px;
+    }
+
+    .member-bio {
+      color: #718096;
+      font-size: 0.95rem;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, margin 0.4s ease;
+      margin: 0;
+    }
+
+    .team-card.expanded .member-bio {
+      max-height: 100px;
+      margin: 12px 0 0;
+    }
+
+    .read-more {
+      display: inline-block;
+      margin-top: 15px;
+      color: #5f67ea;
+      font-weight: 500;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: color 0.2s ease;
+    }
+
+    .read-more:hover {
+      color: #4a51d8;
+    }
+
+    .filters {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      background: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 30px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .filter-btn:hover {
+      background: #f0f2fd;
+    }
+
+    .filter-btn.active {
+      background: #5f67ea;
+      color: white;
+    }
+
+    @media (max-width: 768px) {
+      .team-heading h2 {
+        font-size: 2rem;
+      }
+      
+      .team-grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 30px;
+      }
+      
+      .card-image {
+        height: 240px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .team-heading h2 {
+        font-size: 1.8rem;
+      }
+      
+      .team-grid {
+        grid-template-columns: 1fr;
+        gap: 25px;
+      }
+      
+      .filters {
+        gap: 10px;
+      }
+      
+      .filter-btn {
+        padding: 8px 15px;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+<div class="container">
+  <div class="team-heading">
+    <h2>Meet Our Team</h2>
+    <p>We're a diverse group of passionate individuals who are committed to delivering excellence in everything we do.</p>
+  </div>
+  
+  <div class="filters">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="leadership">Leadership</button>
+    <button class="filter-btn" data-filter="development">Development</button>
+    <button class="filter-btn" data-filter="design">Design</button>
+    <button class="filter-btn" data-filter="marketing">Marketing</button>
+  </div>
+  
+  <div class="team-grid">
+    <!-- Team Member 1 -->
+    <div class="team-card" data-category="leadership">
+      <div class="card-image">
+        <img src="/api/placeholder/400/400" alt="Sarah Johnson">
+        <div class="card-overlay"></div>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-github"></i></a>
+        </div>
+      </div>
+      <div class="card-content">
+        <h3 class="member-name">Sarah Johnson</h3>
+        <p class="member-role">CEO & Founder</p>
+        <p class="member-bio">Sarah has over 15 years of experience in tech leadership and a passion for building innovative solutions that make a difference.</p>
+        <span class="read-more">Read More</span>
+      </div>
+    </div>
+    
+    <!-- Team Member 2 -->
+    <div class="team-card" data-category="development">
+      <div class="card-image">
+        <img src="/api/placeholder/400/400" alt="Michael Chen">
+        <div class="card-overlay"></div>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-github"></i></a>
+        </div>
+      </div>
+      <div class="card-content">
+        <h3 class="member-name">Michael Chen</h3>
+        <p class="member-role">Lead Developer</p>
+        <p class="member-bio">Michael is a full-stack developer with expertise in React, Node.js, and cloud architecture. He loves solving complex problems.</p>
+        <span class="read-more">Read More</span>
+      </div>
+    </div>
+    
+    <!-- Team Member 3 -->
+    <div class="team-card" data-category="design">
+      <div class="card-image">
+        <img src="/api/placeholder/400/400" alt="Amara Davis">
+        <div class="card-overlay"></div>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#"><i class="fab fa-dribbble"></i></a>
+          <a href="#"><i class="fab fa-behance"></i></a>
+        </div>
+      </div>
+      <div class="card-content">
+        <h3 class="member-name">Amara Davis</h3>
+        <p class="member-role">UI/UX Designer</p>
+        <p class="member-bio">Amara combines creativity with user-centered design principles to create beautiful and functional digital experiences.</p>
+        <span class="read-more">Read More</span>
+      </div>
+    </div>
+    
+    <!-- Team Member 4 -->
+    <div class="team-card" data-category="marketing">
+      <div class="card-image">
+        <img src="/api/placeholder/400/400" alt="James Wilson">
+        <div class="card-overlay"></div>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+        </div>
+      </div>
+      <div class="card-content">
+        <h3 class="member-name">James Wilson</h3>
+        <p class="member-role">Marketing Director</p>
+        <p class="member-bio">James brings strategic vision to our marketing efforts, with expertise in digital marketing and brand development.</p>
+        <span class="read-more">Read More</span>
+      </div>
+    </div>
+    
+    <!-- Team Member 5 -->
+    <div class="team-card" data-category="development">
+      <div class="card-image">
+        <img src="/api/placeholder/400/400" alt="Elena Rodriguez">
+        <div class="card-overlay"></div>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#"><i class="fab fa-github"></i></a>
+          <a href="#"><i class="fab fa-codepen"></i></a>
+        </div>
+      </div>
+      <div class="card-content">
+        <h3 class="member-name">Elena Rodriguez</h3>
+        <p class="member-role">Backend Engineer</p>
+        <p class="member-bio">Elena specializes in building robust and scalable backend systems with a focus on performance and security.</p>
+        <span class="read-more">Read More</span>
+      </div>
+    </div>
+    
+    <!-- Team Member 6 -->
+    <div class="team-card" data-category="design">
+      <div class="card-image">
+        <img src="/api/placeholder/400/400" alt="Kai Patel">
+        <div class="card-overlay"></div>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#"><i class="fab fa-dribbble"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+      <div class="card-content">
+        <h3 class="member-name">Kai Patel</h3>
+        <p class="member-role">Visual Designer</p>
+        <p class="member-bio">Kai creates stunning visual elements that elevate our brand and product experience with a keen eye for detail.</p>
+        <span class="read-more">Read More</span>
+      </div>
+    </div>
+    
+    <!-- Team Member 7 -->
+    <div class="team-card" data-category="leadership">
+      <div class="card-image">
+        <img src="/api/placeholder/400/400" alt="Olivia Taylor">
+        <div class="card-overlay"></div>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-medium"></i></a>
+        </div>
+      </div>
+      <div class="card-content">
+        <h3 class="member-name">Olivia Taylor</h3>
+        <p class="member-role">Product Manager</p>
+        <p class="member-bio">Olivia bridges the gap between technical and business teams, ensuring our products meet user needs and business goals.</p>
+        <span class="read-more">Read More</span>
+      </div>
+    </div>
+    
+    <!-- Team Member 8 -->
+    <div class="team-card" data-category="marketing">
+      <div class="card-image">
+        <img src="/api/placeholder/400/400" alt="Theo Adams">
+        <div class="card-overlay"></div>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+        </div>
+      <div class="card-content">
+        <h3 class="member-name">Theo Adams</h3>
+        <p class="member-role">Content Strategist</p>
+        <p class="member-bio">Theo crafts compelling content that tells our story and connects with our audience across various channels.</p>
+        <span class="read-more">Read More</span>
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+<script>
+  // Filter functionality
+  const filterButtons = document.querySelectorAll('.filter-btn');
+  const teamCards = document.querySelectorAll('.team-card');
+  
+  filterButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      // Update active button
+      filterButtons.forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
+      
+      const filter = button.getAttribute('data-filter');
+      
+      // Show/hide team cards based on filter
+      teamCards.forEach(card => {
+        if (filter === 'all' || card.getAttribute('data-category') === filter) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+  
+  // Read more functionality
+  const readMoreButtons = document.querySelectorAll('.read-more');
+  
+  readMoreButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const card = button.closest('.team-card');
+      card.classList.toggle('expanded');
+      
+      if (card.classList.contains('expanded')) {
+        button.textContent = 'Read Less';
+      } else {
+        button.textContent = 'Read More';
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
